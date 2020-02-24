@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using System.Web.WebPages.Html;
+using System.Web.Mvc;
 
 namespace MyProject.Models
 {
@@ -23,7 +23,7 @@ namespace MyProject.Models
         public string UserEmail { get; set; }
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Confirm Email")]
-        [Compare("UserEmail", ErrorMessage = "The Email and confirmation Email do not match.")]
+        //[Compare("UserEmail", ErrorMessage = "The Email and confirmation Email do not match.")]
         public string ConfirmUserEmail { get; set; }
         #endregion
         #region FullName
@@ -50,16 +50,19 @@ namespace MyProject.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("UserPassword", ErrorMessage = "The password and confirmation password do not match.")]
+        //[Compare("UserPassword", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmUserPassword { get; set; }
         #endregion
 
         // Need to be drop down menu to choose Role
+
+        
+
         [Required]
         [Display(Name = "Select Role")]
-        public string Role { get; set; }
-        public IEnumerable<SelectListItem> Roles { get; set; }
-        
+        public int SelectedRole { get { return 2; } }
+        public SelectList RoleList { get; set; }
+
 
         // private DateTime Register = DateTime.Now;
         //[Required]
@@ -77,6 +80,22 @@ namespace MyProject.Models
         public DbSet<Account> Users { get; set; }
     }
 
-
+    public static class Repository
+    {
+        public class UserRole           
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+        public static IEnumerable<UserRole> FetchRoles()
+        {
+            return new List<UserRole>()
+            {
+                new UserRole(){ Id = 1, Name = "Admin" },
+                new UserRole(){ Id = 2, Name = "Member" },
+                new UserRole(){ Id = 3, Name = "Guest" }
+            };
+        }
+    }
 
 }

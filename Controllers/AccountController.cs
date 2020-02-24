@@ -16,8 +16,8 @@ namespace MyProject.Controllers
 
         // GET: Account
         public ActionResult Index()
-        {
-            return View(db.Users.ToList());
+        {   
+            return View(db.Users);
         }
 
         // GET: Account/Details/5
@@ -35,10 +35,18 @@ namespace MyProject.Controllers
             return View(account);
         }
 
+        private void ConfigureViewModel(Account model)
+        {
+            IEnumerable<Repository.UserRole> users = Repository.FetchRoles();
+            model.RoleList = new SelectList(users, "Id", "Name");
+        }
+
         // GET: Account/Create
         public ActionResult Create()
         {
-            return View();
+            Account ac = new Account();
+            ConfigureViewModel(ac);
+            return View(ac);
         }
 
         // POST: Account/Create
@@ -46,11 +54,11 @@ namespace MyProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserName,UserEmail,ConfirmUserEmail,FirstName,LastName,PhoneNumber,UserPassword,ConfirmUserPassword,Role")] Account account)
+        public ActionResult Create([Bind(Include = "Id,UserName,UserEmail,ConfirmUserEmail,FirstName,LastName,PhoneNumber,UserPassword,ConfirmUserPassword,RoleList")] Account account)
         {
+                ConfigureViewModel(account);
             if (ModelState.IsValid)
             {
-           
                 db.Users.Add(account);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -79,7 +87,7 @@ namespace MyProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UserName,UserEmail,ConfirmUserEmail,FirstName,LastName,PhoneNumber,UserPassword,ConfirmUserPassword,Role")] Account account)
+        public ActionResult Edit([Bind(Include = "Id,UserName,UserEmail,ConfirmUserEmail,FirstName,LastName,PhoneNumber,UserPassword,ConfirmUserPassword,RoleList")] Account account)
         {
             if (ModelState.IsValid)
             {
