@@ -1,0 +1,13 @@
+﻿// To Do:
+
+* Prevent registration with same username and email
+* Create a login page and account with basic info such as Username, registration time and options to change password and email which upon chaging email a password will be required
+* Make the existing Account view for Admin role ONLY!
+* Make a drop down menu to choose UserRole when creating a new user
+* Find a way that in Product creation the price textbox will take only number (float) 
+* ?? Add phone number in register ??
+* Add coupon for discount for limited time
+* Fix register date (now it display the date and time the website loaded)
+
+// Done:
+* Create a Product Model
